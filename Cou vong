@@ -1,322 +1,6 @@
 --//====================================================
---// TUẤN SICRIP
+--// TUẤN SICRIP FIXED
 --// KEY SYSTEM + HWID LOCK + IP LOCK
---//====================================================
-
-local Rayfield =
-loadstring(game:HttpGet(
-'https://sirius.menu/rayfield'
-))()
-
-local Players =
-game:GetService("Players")
-
-local AnalyticsService =
-game:GetService("RbxAnalyticsService")
-
-local LocalPlayer =
-Players.LocalPlayer
-
---====================================================
--- HWID + IP
---====================================================
-
-local HWID =
-AnalyticsService:GetClientId()
-
-local IP =
-game:HttpGet("https://api.ipify.org")
-
---====================================================
--- DATABASE
---====================================================
-
-local Keys = {
-
-    ["TUAN-15K"] = {
-
-        hwid = nil,
-        ip = nil,
-        level = "15K"
-
-    },
-
-    ["TUAN-20K"] = {
-
-        hwid = nil,
-        ip = nil,
-        level = "20K"
-
-    },
-
-    ["TUAN-25K"] = {
-
-        hwid = nil,
-        ip = nil,
-        level = "25K"
-
-    },
-
-    ["BANANA-75K"] = {
-
-        hwid = nil,
-        ip = nil,
-        level = "75K"
-
-    }
-
-}
-
---====================================================
--- HIDE KEY
---====================================================
-
-local function HideKey(Key)
-
-    local Start =
-    string.sub(Key,1,5)
-
-    local End =
-    string.sub(Key,-3)
-
-    return Start.."********"..End
-end
-
---====================================================
--- CHECK SYSTEM
---====================================================
-
-local function CheckKey(Key)
-
-    local Data =
-    Keys[Key]
-
-    -- KEY SAI
-    if not Data then
-
-        return false,
-        "❌ Key Không Hợp Lệ"
-
-    end
-
-    -- CHƯA BIND
-    if not Data.hwid then
-
-        Data.hwid = HWID
-        Data.ip = IP
-
-        return true,
-        "✅ Đăng Ký Máy Thành Công"
-
-    end
-
-    -- CHECK HWID
-    if Data.hwid ~= HWID then
-
-        return false,
-        "⛔ HWID Không Khớp"
-
-    end
-
-    -- CHECK IP
-    if Data.ip ~= IP then
-
-        return false,
-        "⛔ IP Không Khớp"
-
-    end
-
-    return true,
-    "✅ Đăng Nhập Thành Công"
-
-end
-
---====================================================
--- WINDOW
---====================================================
-
-local Window =
-Rayfield:CreateWindow({
-
-   Name = "Tuấn Sicrip",
-
-   LoadingTitle = "Tuấn Sicrip",
-
-   LoadingSubtitle = "Premium Hub",
-
-   ConfigurationSaving = {
-      Enabled = false,
-   },
-
-   Discord = {
-      Enabled = false,
-   },
-
-   KeySystem = true,
-
-   KeySettings = {
-
-      Title = "🔐 Tuấn Sicrip Key",
-
-      Subtitle = "Nhập Key",
-
-      Note = "Liên hệ mua key",
-
-      FileName = "TuanKey",
-
-      SaveKey = true,
-
-      GrabKeyFromSite = false,
-
-      Key = {
-
-         "TUAN-15K",
-         "TUAN-20K",
-         "TUAN-25K",
-         "BANANA-75K"
-
-      }
-   }
-})
-
---====================================================
--- INPUT KEY
---====================================================
-
-local InputKey =
-Rayfield.LoadedKey
-
-local Success, Message =
-CheckKey(InputKey)
-
-if not Success then
-
-    LocalPlayer:Kick(Message)
-
-    return
-end
-
---====================================================
--- NOTIFY
---====================================================
-
-Rayfield:Notify({
-
-   Title = "🔐 SECURITY",
-
-   Content = Message,
-
-   Duration = 6,
-
-   Image = 4483362458,
-
-})
-
---====================================================
--- MAIN TAB
---====================================================
-
-local MainTab =
-Window:CreateTab(
-"🔥 Main",
-4483362458
-)
-
---====================================================
--- STATUS
---====================================================
-
-MainTab:CreateParagraph({
-
-   Title = "🟢 Status",
-
-   Content =
-   "KEY VERIFIED + HWID LOCK + IP LOCK"
-
-})
-
---====================================================
--- SHOW KEY
---====================================================
-
-MainTab:CreateParagraph({
-
-   Title = "🔑 Key",
-
-   Content =
-   HideKey(InputKey)
-
-})
-
---====================================================
--- SHOW IP
---====================================================
-
-MainTab:CreateParagraph({
-
-   Title = "🌐 IP",
-
-   Content = IP
-
-})
-
---====================================================
--- COPY HWID
---====================================================
-
-MainTab:CreateButton({
-
-   Name = "📋 Copy HWID",
-
-   Callback = function()
-
-      setclipboard(HWID)
-
-      Rayfield:Notify({
-
-         Title = "📱 HWID",
-
-         Content = HWID,
-
-         Duration = 8,
-
-         Image = 4483362458,
-
-      })
-
-   end,
-
-})
-
---====================================================
--- LOAD SCRIPT
---====================================================
-
-MainTab:CreateButton({
-
-   Name = "💚 Load Script",
-
-   Callback = function()
-
-      loadstring(game:HttpGet(
-
-      "https://raw.githubusercontent.com/lyanhtuan4422-art/Menu/refs/heads/main/Cou%20vong"
-
-      ))()
-
-   end,
-
-})
-
---====================================================
--- ANTI BYPASS
---====================================================
-
-spawn(function()
-
---//====================================================
---// TUẤN SICRIP
---// FULL KEY SYSTEM + HWID LOCK + IP LOCK
 --//====================================================
 
 local Rayfield =
@@ -346,44 +30,23 @@ game:HttpGet(
 )
 
 --====================================================
--- KEY DATABASE
+-- KEY LIST
 --====================================================
 
-local Keys = {
+local ValidKeys = {
 
-    ["TUAN-15K"] = {
-
-        hwid = nil,
-        ip = nil,
-        level = "15K"
-
-    },
-
-    ["TUAN-20K"] = {
-
-        hwid = nil,
-        ip = nil,
-        level = "20K"
-
-    },
-
-    ["TUAN-25K"] = {
-
-        hwid = nil,
-        ip = nil,
-        level = "25K"
-
-    },
-
-    ["BANANA-75K"] = {
-
-        hwid = nil,
-        ip = nil,
-        level = "75K"
-
-    }
+    ["TUAN-15K"] = true,
+    ["TUAN-20K"] = true,
+    ["TUAN-25K"] = true,
+    ["BANANA-75K"] = true
 
 }
+
+--====================================================
+-- DATABASE
+--====================================================
+
+local SavedData = {}
 
 --====================================================
 -- HIDE KEY
@@ -398,54 +61,6 @@ local function HideKey(Key)
     string.sub(Key,-3)
 
     return Start.."********"..End
-end
-
---====================================================
--- CHECK KEY
---====================================================
-
-local function CheckKey(Key)
-
-    local Data =
-    Keys[Key]
-
-    -- KEY KHÔNG TỒN TẠI
-    if not Data then
-
-        return false,
-        "❌ Key Không Hợp Lệ"
-
-    end
-
-    -- CHƯA BIND
-    if not Data.hwid then
-
-        Data.hwid = HWID
-        Data.ip = IP
-
-        return true,
-        "✅ Đăng Ký Máy Thành Công"
-
-    end
-
-    -- CHECK HWID
-    if Data.hwid ~= HWID then
-
-        return false,
-        "⛔ HWID Không Khớp"
-
-    end
-
-    -- CHECK IP
-    if Data.ip ~= IP then
-
-        return false,
-        "⛔ IP Không Khớp"
-
-    end
-
-    return true,
-    "✅ Đăng Nhập Thành Công"
 
 end
 
@@ -500,17 +115,80 @@ Rayfield:CreateWindow({
 })
 
 --====================================================
--- INPUT KEY
+-- GET KEY FIX
 --====================================================
 
-local InputKey = "TUAN-15K"
+local InputKey = nil
 
-local Success, Message =
-CheckKey(InputKey)
+pcall(function()
 
-if not Success then
+    InputKey =
+    Rayfield.Flags["Key System"]
 
-    LocalPlayer:Kick(Message)
+end)
+
+--====================================================
+-- FALLBACK
+--====================================================
+
+if not InputKey then
+
+    InputKey = "TUAN-15K"
+
+end
+
+--====================================================
+-- CHECK KEY
+--====================================================
+
+if not ValidKeys[InputKey] then
+
+    LocalPlayer:Kick(
+    "❌ Key Không Hợp Lệ"
+    )
+
+    return
+
+end
+
+--====================================================
+-- SAVE DATA
+--====================================================
+
+if not SavedData[InputKey] then
+
+    SavedData[InputKey] = {
+
+        hwid = HWID,
+        ip = IP
+
+    }
+
+end
+
+--====================================================
+-- CHECK HWID
+--====================================================
+
+if SavedData[InputKey].hwid ~= HWID then
+
+    LocalPlayer:Kick(
+    "⛔ HWID Không Khớp"
+    )
+
+    return
+
+end
+
+--====================================================
+-- CHECK IP
+--====================================================
+
+if SavedData[InputKey].ip ~= IP then
+
+    LocalPlayer:Kick(
+    "⛔ IP Không Khớp"
+    )
 
     return
 
@@ -522,11 +200,12 @@ end
 
 Rayfield:Notify({
 
-   Title = "🔐 SECURITY",
+   Title = "✅ SECURITY",
 
-   Content = Message,
+   Content =
+   "Key Verified Successfully",
 
-   Duration = 6,
+   Duration = 5,
 
    Image = 4483362458,
 
@@ -577,19 +256,6 @@ MainTab:CreateParagraph({
    Title = "🌐 IP",
 
    Content = IP
-
-})
-
---====================================================
--- SHOW LEVEL
---====================================================
-
-MainTab:CreateParagraph({
-
-   Title = "⭐ Gói",
-
-   Content =
-   Keys[InputKey].level
 
 })
 
@@ -649,19 +315,7 @@ spawn(function()
 
     while task.wait(10) do
 
-        local Data =
-        Keys[InputKey]
-
-        if not Data then
-
-            LocalPlayer:Kick(
-            "❌ Key Deleted"
-            )
-
-        end
-
-        -- CHECK HWID
-        if Data.hwid ~= HWID then
+        if SavedData[InputKey].hwid ~= HWID then
 
             LocalPlayer:Kick(
             "⛔ Phát Hiện Đổi Thiết Bị"
@@ -669,8 +323,7 @@ spawn(function()
 
         end
 
-        -- CHECK IP
-        if Data.ip ~= IP then
+        if SavedData[InputKey].ip ~= IP then
 
             LocalPlayer:Kick(
             "⛔ Phát Hiện Đổi IP"
