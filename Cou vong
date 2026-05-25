@@ -1,97 +1,255 @@
-loadstring(game:HttpGet(("https://raw.githubusercontent.com/daucobonhi/Ui-Redz-V2/refs/heads/main/UiREDzV2.lua")))()
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-local Window = MakeWindow({
-    Hub = {
-        Title = "🌈 Tuấn PRO 🌈",
-        Animation = "🎵 Tick tock: tuan4422 🌚"
-    },
-    Key = {
-        KeySystem = false,
-        Title = "🔑 Key System",
-        Description = "✨ Welcome To Tuấn PRO",
-        KeyLink = "",
-        Keys = {"1234"},
-        Notifi = {
-            Notifications = true,
-            CorrectKey = "✅ Running the Script...",
-            Incorrectkey = "❌ The key is incorrect",
-            CopyKeyLink = "📋 Copied to Clipboard"
+--========================
+-- USERID LOCK + KEY RIÊNG
+--========================
+
+local AllowedUsers = {
+    [123456789] = "TUANSICRIP-9X2A1",
+    [987654321] = "VIP-TUAN-X92",
+    [555555555] = "BANANA-75K-X"
+}
+
+local Player = game.Players.LocalPlayer
+local UserKey = AllowedUsers[Player.UserId]
+
+if not UserKey then
+    Player:Kick("❌ Bạn chưa được cấp quyền sử dụng script")
+    return
+end
+
+--========================
+-- MENU + KEY SYSTEM
+--========================
+
+local Window = Rayfield:CreateWindow({
+   Name = "Tuấn Sicrip",
+   LoadingTitle = "Tuấn Sicrip",
+   LoadingSubtitle = "Premium Hub",
+
+   ConfigurationSaving = {
+      Enabled = false,
+   },
+
+   Discord = {
+      Enabled = false,
+   },
+
+   KeySystem = true,
+
+   KeySettings = {
+      Title = "🔥 Tuấn Sicrip Key",
+      Subtitle = "Nhập Key Để Tiếp Tục",
+      Note = "Mỗi người có key riêng",
+      FileName = "TuansicripKey",
+      SaveKey = true,
+      GrabKeyFromSite = false,
+
+      Key = {
+         UserKey
+      }
+   }
+})
+
+local TweenService = game:GetService("TweenService")
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+--========================
+-- GUI THÔNG BÁO
+--========================
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = PlayerGui
+
+-- LOGO
+local Logo = Instance.new("TextLabel")
+Logo.Parent = ScreenGui
+Logo.Size = UDim2.new(0,0,0,60)
+Logo.Position = UDim2.new(0.5,-200,0.32,0)
+Logo.BackgroundTransparency = 1
+Logo.Text = "Tuấn Sicrip"
+Logo.TextColor3 = Color3.fromRGB(0,255,100)
+Logo.TextStrokeTransparency = 0
+Logo.Font = Enum.Font.GothamBlack
+Logo.TextScaled = true
+
+TweenService:Create(
+    Logo,
+    TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+    {Size = UDim2.new(0,400,0,60)}
+):Play()
+
+--========================
+-- KHUNG THÔNG BÁO
+--========================
+
+local WarningFrame = Instance.new("Frame")
+WarningFrame.Parent = ScreenGui
+WarningFrame.Size = UDim2.new(0,550,0,180)
+WarningFrame.Position = UDim2.new(0.5,-275,0.5,-90)
+WarningFrame.BackgroundColor3 = Color3.fromRGB(10,10,10)
+WarningFrame.BorderSizePixel = 0
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0,14)
+UICorner.Parent = WarningFrame
+
+-- NÚT X
+local CloseButton = Instance.new("TextButton")
+CloseButton.Parent = WarningFrame
+CloseButton.Size = UDim2.new(0,35,0,35)
+CloseButton.Position = UDim2.new(1,-40,0,5)
+CloseButton.BackgroundColor3 = Color3.fromRGB(25,25,25)
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255,0,0)
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.TextScaled = true
+
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(0,8)
+CloseCorner.Parent = CloseButton
+
+-- KHUNG TK
+local AccountFrame = Instance.new("Frame")
+AccountFrame.Parent = WarningFrame
+AccountFrame.Size = UDim2.new(0.75,0,0,38)
+AccountFrame.Position = UDim2.new(0.125,0,0,8)
+AccountFrame.BackgroundColor3 = Color3.fromRGB(15,15,15)
+AccountFrame.BorderSizePixel = 2
+AccountFrame.BorderColor3 = Color3.fromRGB(255,255,255)
+
+local AccountCorner = Instance.new("UICorner")
+AccountCorner.CornerRadius = UDim.new(0,8)
+AccountCorner.Parent = AccountFrame
+
+-- TEXT TK
+local AccountText = Instance.new("TextLabel")
+AccountText.Parent = AccountFrame
+AccountText.Size = UDim2.new(1,0,1,0)
+AccountText.BackgroundTransparency = 1
+AccountText.TextColor3 = Color3.fromRGB(0,255,100)
+AccountText.Font = Enum.Font.GothamBlack
+AccountText.TextScaled = true
+AccountText.Text = "TK Sicrip: bo Quảng la"
+
+-- TEXT CẢNH BÁO
+local WarningText = Instance.new("TextLabel")
+WarningText.Parent = WarningFrame
+WarningText.Size = UDim2.new(1,-20,1,-80)
+WarningText.Position = UDim2.new(0,10,0,65)
+WarningText.BackgroundTransparency = 1
+WarningText.TextColor3 = Color3.fromRGB(0,255,100)
+WarningText.Font = Enum.Font.GothamBold
+WarningText.TextScaled = true
+WarningText.TextWrapped = true
+WarningText.Text = "Sicrip chỉ dùng cho 1 máy\nNếu dùng quá nhiều máy sẽ bị khóa acc và script"
+
+--========================
+-- ĐÓNG GUI
+--========================
+
+local function CloseGui()
+
+    TweenService:Create(
+        WarningFrame,
+        TweenInfo.new(1),
+        {BackgroundTransparency = 1}
+    ):Play()
+
+    TweenService:Create(
+        WarningText,
+        TweenInfo.new(1),
+        {TextTransparency = 1}
+    ):Play()
+
+    TweenService:Create(
+        AccountText,
+        TweenInfo.new(1),
+        {TextTransparency = 1}
+    ):Play()
+
+    TweenService:Create(
+        Logo,
+        TweenInfo.new(1),
+        {TextTransparency = 1}
+    ):Play()
+
+    TweenService:Create(
+        CloseButton,
+        TweenInfo.new(1),
+        {
+            TextTransparency = 1,
+            BackgroundTransparency = 1
         }
-    }
-})
+    ):Play()
 
--- Nút thu nhỏ đẹp hơn
-MinimizeButton({
-    Image = "http://www.roblox.com/asset/?id=101902016188836",
-    Size = {60, 60},
-    Color = Color3.fromRGB(255, 0, 255),
-    Corner = true,
-    Stroke = true,
-    StrokeColor = Color3.fromRGB(0, 255, 255)
-})
+    wait(1)
+    ScreenGui:Destroy()
+end
 
--- 🌈 Hiệu ứng cầu vồng
-spawn(function()
-    while wait() do
-        for i = 0, 255, 5 do
-            local color = Color3.fromHSV(i/255, 1, 1)
+CloseButton.MouseButton1Click:Connect(function()
+    CloseGui()
+end)
 
-            pcall(function()
-                Window:SetTheme(color)
-            end)
-        end
+task.delay(60, function()
+    if ScreenGui then
+        CloseGui()
     end
 end)
 
------- TAB
-local Tab1o = MakeTab({
-    Name = "🌾 Script Farm 15K 🌾",
-    Icon = "rbxassetid://7733960981"
+--========================
+-- TAB 15K
+--========================
+
+local Tab15k = Window:CreateTab("🔥 Sicrip 15K", 4483362458)
+
+Tab15k:CreateButton({
+   Name = "💚 Load Script 15K",
+   Callback = function()
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/DatThg/main/DatThgV5English"))()
+   end,
 })
 
------- BUTTON FARM
-AddButton(Tab1o, {
-    Name = "💸 Farm 15K 💸",
-    Callback = function()
-        loadstring(game:HttpGet("https://github.com/LuaCrack/DatThg/raw/refs/heads/main/DatThgV5English"))()
-    end
+--========================
+-- TAB 20K
+--========================
+
+local Tab20k = Window:CreateTab("💎 Sicrip 20K", 4483362458)
+
+Tab20k:CreateParagraph({
+   Title = "🟢 Premium",
+   Content = "Cần phải mua mới dùng được"
 })
 
------- BUTTON FUN
-AddButton(Tab1o, {
-    Name = "🔥 Super Speed 🔥",
-    Callback = function()
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 50
-    end
+--========================
+-- TAB 25K
+--========================
+
+local Tab25k = Window:CreateTab("⚔️ Sicrip 25K", 4483362458)
+
+Tab25k:CreateParagraph({
+   Title = "🟢 Premium",
+   Content = "Cần phải mua mới dùng được"
 })
 
-AddButton(Tab1o, {
-    Name = "🦘 Super Jump 🦘",
-    Callback = function()
-        game.Players.LocalPlayer.Character.Humanoid.JumpPower = 120
-    end
+--========================
+-- TAB BANANA
+--========================
+
+local BananaTab = Window:CreateTab("🍌 Banana 75K", 4483362458)
+
+BananaTab:CreateParagraph({
+   Title = "🟢 Premium",
+   Content = "Cần phải mua mới dùng được"
 })
 
-AddButton(Tab1o, {
-    Name = "🌈 RGB Character 🌈",
-    Callback = function()
-        spawn(function()
-            while wait() do
-                for i = 0,255,5 do
-                    local rgb = Color3.fromHSV(i/255,1,1)
+--========================
+-- THÔNG BÁO
+--========================
 
-                    pcall(function()
-                        for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-                            if v:IsA("BasePart") then
-                                v.Color = rgb
-                            end
-                        end
-                    end)
-                end
-            end
-        end)
-    end
+Rayfield:Notify({
+   Title = "Tuấn Sicrip",
+   Content = "HWID Lock + Key System Enabled",
+   Duration = 5,
+   Image = 4483362458,
 })
-
------- LABEL
-AddTextLabel(Tab1o, "✨ Menu cầu vồng siêu đẹp by Tuấn PRO ✨")
