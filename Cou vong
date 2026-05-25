@@ -1,5 +1,5 @@
 --//====================================================
---// TUẤN SICRIP FIXED
+--// TUẤN SICRIP FINAL
 --// KEY SYSTEM + HWID LOCK + IP LOCK
 --//====================================================
 
@@ -30,7 +30,7 @@ game:HttpGet(
 )
 
 --====================================================
--- KEY LIST
+-- VALID KEYS
 --====================================================
 
 local ValidKeys = {
@@ -53,6 +53,10 @@ local SavedData = {}
 --====================================================
 
 local function HideKey(Key)
+
+    if not Key then
+        return "UNKNOWN"
+    end
 
     local Start =
     string.sub(Key,1,5)
@@ -115,7 +119,7 @@ Rayfield:CreateWindow({
 })
 
 --====================================================
--- GET KEY FIX
+-- GET INPUT KEY
 --====================================================
 
 local InputKey = nil
@@ -152,7 +156,7 @@ if not ValidKeys[InputKey] then
 end
 
 --====================================================
--- SAVE DATA
+-- FIRST REGISTER
 --====================================================
 
 if not SavedData[InputKey] then
@@ -195,7 +199,7 @@ if SavedData[InputKey].ip ~= IP then
 end
 
 --====================================================
--- NOTIFY
+-- SUCCESS
 --====================================================
 
 Rayfield:Notify({
@@ -315,7 +319,18 @@ spawn(function()
 
     while task.wait(10) do
 
-        if SavedData[InputKey].hwid ~= HWID then
+        local Data =
+        SavedData[InputKey]
+
+        if not Data then
+
+            LocalPlayer:Kick(
+            "❌ Key Deleted"
+            )
+
+        end
+
+        if Data.hwid ~= HWID then
 
             LocalPlayer:Kick(
             "⛔ Phát Hiện Đổi Thiết Bị"
@@ -323,7 +338,7 @@ spawn(function()
 
         end
 
-        if SavedData[InputKey].ip ~= IP then
+        if Data.ip ~= IP then
 
             LocalPlayer:Kick(
             "⛔ Phát Hiện Đổi IP"
@@ -336,7 +351,7 @@ spawn(function()
 end)
 
 --====================================================
--- FINISH
+-- LOADED
 --====================================================
 
 Rayfield:Notify({
