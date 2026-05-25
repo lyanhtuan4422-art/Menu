@@ -1,12 +1,31 @@
---//====================================================
---// TUẤN SICRIP FINAL
---// KEY SYSTEM + HWID LOCK + IP LOCK
---//====================================================
+repeat task.wait() until game:IsLoaded()
 
-local Rayfield =
-loadstring(game:HttpGet(
-"https://sirius.menu/rayfield"
-))()
+--====================================================
+-- LOAD RAYFIELD SAFE
+--====================================================
+
+local Success, Rayfield = pcall(function()
+
+    return loadstring(game:HttpGet(
+    "https://sirius.menu/rayfield"
+    ))()
+
+end)
+
+if not Success or not Rayfield then
+
+    warn("Không load được Rayfield")
+
+    return
+
+end
+
+--====================================================
+-- SERVICES
+--====================================================
+
+local TweenService =
+game:GetService("TweenService")
 
 local Players =
 game:GetService("Players")
@@ -14,20 +33,24 @@ game:GetService("Players")
 local AnalyticsService =
 game:GetService("RbxAnalyticsService")
 
-local LocalPlayer =
+local Player =
 Players.LocalPlayer
 
+local CoreGui =
+game:GetService("CoreGui")
+
 --====================================================
--- HWID + IP
+-- HWID
 --====================================================
 
-local HWID =
-AnalyticsService:GetClientId()
+local HWID = "UNKNOWN"
 
-local IP =
-game:HttpGet(
-"https://api.ipify.org"
-)
+pcall(function()
+
+    HWID =
+    AnalyticsService:GetClientId()
+
+end)
 
 --====================================================
 -- VALID KEYS
@@ -41,12 +64,6 @@ local ValidKeys = {
     ["BANANA-75K"] = true
 
 }
-
---====================================================
--- DATABASE
---====================================================
-
-local SavedData = {}
 
 --====================================================
 -- HIDE KEY
@@ -69,7 +86,7 @@ local function HideKey(Key)
 end
 
 --====================================================
--- WINDOW
+-- MENU
 --====================================================
 
 local Window =
@@ -97,9 +114,9 @@ Rayfield:CreateWindow({
 
       Subtitle = "Nhập Key Để Dùng",
 
-      Note = "Liên hệ mua key",
+      Note = "Liên hệ admin để mua key",
 
-      FileName = "TuanKey",
+      FileName = "TuanSicripKey",
 
       SaveKey = true,
 
@@ -119,247 +136,396 @@ Rayfield:CreateWindow({
 })
 
 --====================================================
--- GET INPUT KEY
+-- GUI
 --====================================================
 
-local InputKey = nil
+local ScreenGui =
+Instance.new("ScreenGui")
+
+ScreenGui.Name =
+"TuanSicrip"
 
 pcall(function()
 
-    InputKey =
-    Rayfield.Flags["Key System"]
+    ScreenGui.Parent =
+    CoreGui
 
 end)
 
 --====================================================
--- FALLBACK
+-- LOGO
 --====================================================
 
-if not InputKey then
+local Logo =
+Instance.new("TextLabel")
 
-    InputKey = "TUAN-15K"
+Logo.Parent =
+ScreenGui
 
-end
+Logo.Size =
+UDim2.new(0,0,0,60)
 
---====================================================
--- CHECK KEY
---====================================================
+Logo.Position =
+UDim2.new(0.5,-200,0.32,0)
 
-if not ValidKeys[InputKey] then
+Logo.BackgroundTransparency = 1
 
-    LocalPlayer:Kick(
-    "❌ Key Không Hợp Lệ"
-    )
+Logo.Text =
+"Tuấn Sicrip"
 
-    return
+Logo.TextColor3 =
+Color3.fromRGB(0,255,100)
 
-end
+Logo.TextStrokeTransparency = 0
 
---====================================================
--- FIRST REGISTER
---====================================================
+Logo.Font =
+Enum.Font.GothamBlack
 
-if not SavedData[InputKey] then
+Logo.TextScaled = true
 
-    SavedData[InputKey] = {
+TweenService:Create(
 
-        hwid = HWID,
-        ip = IP
+    Logo,
+
+    TweenInfo.new(
+        2,
+        Enum.EasingStyle.Quad,
+        Enum.EasingDirection.Out
+    ),
+
+    {
+
+        Size =
+        UDim2.new(0,400,0,60)
 
     }
 
+):Play()
+
+--====================================================
+-- WARNING FRAME
+--====================================================
+
+local WarningFrame =
+Instance.new("Frame")
+
+WarningFrame.Parent =
+ScreenGui
+
+WarningFrame.Size =
+UDim2.new(0,550,0,180)
+
+WarningFrame.Position =
+UDim2.new(0.5,-275,0.5,-90)
+
+WarningFrame.BackgroundColor3 =
+Color3.fromRGB(10,10,10)
+
+WarningFrame.BorderSizePixel = 0
+
+local UICorner =
+Instance.new("UICorner")
+
+UICorner.CornerRadius =
+UDim.new(0,14)
+
+UICorner.Parent =
+WarningFrame
+
+--====================================================
+-- CLOSE BUTTON
+--====================================================
+
+local CloseButton =
+Instance.new("TextButton")
+
+CloseButton.Parent =
+WarningFrame
+
+CloseButton.Size =
+UDim2.new(0,35,0,35)
+
+CloseButton.Position =
+UDim2.new(1,-40,0,5)
+
+CloseButton.BackgroundColor3 =
+Color3.fromRGB(25,25,25)
+
+CloseButton.Text = "X"
+
+CloseButton.TextColor3 =
+Color3.fromRGB(255,0,0)
+
+CloseButton.Font =
+Enum.Font.GothamBold
+
+CloseButton.TextScaled = true
+
+local CloseCorner =
+Instance.new("UICorner")
+
+CloseCorner.CornerRadius =
+UDim.new(0,8)
+
+CloseCorner.Parent =
+CloseButton
+
+--====================================================
+-- ACCOUNT FRAME
+--====================================================
+
+local AccountFrame =
+Instance.new("Frame")
+
+AccountFrame.Parent =
+WarningFrame
+
+AccountFrame.Size =
+UDim2.new(0.75,0,0,38)
+
+AccountFrame.Position =
+UDim2.new(0.125,0,0,8)
+
+AccountFrame.BackgroundColor3 =
+Color3.fromRGB(15,15,15)
+
+AccountFrame.BorderSizePixel = 2
+
+AccountFrame.BorderColor3 =
+Color3.fromRGB(255,255,255)
+
+local AccountCorner =
+Instance.new("UICorner")
+
+AccountCorner.CornerRadius =
+UDim.new(0,8)
+
+AccountCorner.Parent =
+AccountFrame
+
+--====================================================
+-- ACCOUNT TEXT
+--====================================================
+
+local AccountText =
+Instance.new("TextLabel")
+
+AccountText.Parent =
+AccountFrame
+
+AccountText.Size =
+UDim2.new(1,0,1,0)
+
+AccountText.BackgroundTransparency = 1
+
+AccountText.TextColor3 =
+Color3.fromRGB(0,255,100)
+
+AccountText.Font =
+Enum.Font.GothamBlack
+
+AccountText.TextScaled = true
+
+AccountText.Text =
+"🔒 HWID LOCK ENABLED"
+
+--====================================================
+-- WARNING TEXT
+--====================================================
+
+local WarningText =
+Instance.new("TextLabel")
+
+WarningText.Parent =
+WarningFrame
+
+WarningText.Size =
+UDim2.new(1,-20,1,-80)
+
+WarningText.Position =
+UDim2.new(0,10,0,65)
+
+WarningText.BackgroundTransparency = 1
+
+WarningText.TextColor3 =
+Color3.fromRGB(0,255,100)
+
+WarningText.Font =
+Enum.Font.GothamBold
+
+WarningText.TextScaled = true
+
+WarningText.TextWrapped = true
+
+WarningText.Text =
+"Sicrip chỉ dùng cho 1 máy\nHWID: "..HWID
+
+--====================================================
+-- CLOSE GUI
+--====================================================
+
+local function CloseGui()
+
+    pcall(function()
+
+        TweenService:Create(
+            WarningFrame,
+            TweenInfo.new(1),
+            {
+                BackgroundTransparency = 1
+            }
+        ):Play()
+
+        TweenService:Create(
+            WarningText,
+            TweenInfo.new(1),
+            {
+                TextTransparency = 1
+            }
+        ):Play()
+
+        TweenService:Create(
+            Logo,
+            TweenInfo.new(1),
+            {
+                TextTransparency = 1
+            }
+        ):Play()
+
+        TweenService:Create(
+            CloseButton,
+            TweenInfo.new(1),
+            {
+                TextTransparency = 1,
+                BackgroundTransparency = 1
+            }
+        ):Play()
+
+    end)
+
+    task.wait(1)
+
+    pcall(function()
+
+        ScreenGui:Destroy()
+
+    end)
+
 end
 
---====================================================
--- CHECK HWID
---====================================================
+CloseButton.MouseButton1Click:Connect(function()
 
-if SavedData[InputKey].hwid ~= HWID then
+    CloseGui()
 
-    LocalPlayer:Kick(
-    "⛔ HWID Không Khớp"
-    )
+end)
 
-    return
+task.delay(60,function()
 
-end
+    if ScreenGui then
 
---====================================================
--- CHECK IP
---====================================================
-
-if SavedData[InputKey].ip ~= IP then
-
-    LocalPlayer:Kick(
-    "⛔ IP Không Khớp"
-    )
-
-    return
-
-end
-
---====================================================
--- SUCCESS
---====================================================
-
-Rayfield:Notify({
-
-   Title = "✅ SECURITY",
-
-   Content =
-   "Key Verified Successfully",
-
-   Duration = 5,
-
-   Image = 4483362458,
-
-})
-
---====================================================
--- MAIN TAB
---====================================================
-
-local MainTab =
-Window:CreateTab(
-"🔥 Main",
-4483362458
-)
-
---====================================================
--- STATUS
---====================================================
-
-MainTab:CreateParagraph({
-
-   Title = "🟢 Status",
-
-   Content =
-   "KEY VERIFIED + HWID LOCK + IP LOCK"
-
-})
-
---====================================================
--- SHOW KEY
---====================================================
-
-MainTab:CreateParagraph({
-
-   Title = "🔑 Key",
-
-   Content =
-   HideKey(InputKey)
-
-})
-
---====================================================
--- SHOW IP
---====================================================
-
-MainTab:CreateParagraph({
-
-   Title = "🌐 IP",
-
-   Content = IP
-
-})
-
---====================================================
--- COPY HWID
---====================================================
-
-MainTab:CreateButton({
-
-   Name = "📋 Copy HWID",
-
-   Callback = function()
-
-      setclipboard(HWID)
-
-      Rayfield:Notify({
-
-         Title = "📱 HWID",
-
-         Content = HWID,
-
-         Duration = 8,
-
-         Image = 4483362458,
-
-      })
-
-   end,
-
-})
-
---====================================================
--- LOAD SCRIPT
---====================================================
-
-MainTab:CreateButton({
-
-   Name = "💚 Load Script",
-
-   Callback = function()
-
-      loadstring(game:HttpGet(
-
-      "https://raw.githubusercontent.com/lyanhtuan4422-art/Menu/refs/heads/main/Cou%20vong"
-
-      ))()
-
-   end,
-
-})
-
---====================================================
--- ANTI BYPASS
---====================================================
-
-spawn(function()
-
-    while task.wait(10) do
-
-        local Data =
-        SavedData[InputKey]
-
-        if not Data then
-
-            LocalPlayer:Kick(
-            "❌ Key Deleted"
-            )
-
-        end
-
-        if Data.hwid ~= HWID then
-
-            LocalPlayer:Kick(
-            "⛔ Phát Hiện Đổi Thiết Bị"
-            )
-
-        end
-
-        if Data.ip ~= IP then
-
-            LocalPlayer:Kick(
-            "⛔ Phát Hiện Đổi IP"
-            )
-
-        end
+        CloseGui()
 
     end
 
 end)
 
 --====================================================
--- LOADED
+-- TAB 15K
+--====================================================
+
+local Tab15k =
+Window:CreateTab(
+"🔥 Sicrip 15K",
+4483362458
+)
+
+Tab15k:CreateButton({
+
+   Name = "💚 Load Script 15K",
+
+   Callback = function()
+
+      pcall(function()
+
+          loadstring(game:HttpGet(
+
+          "https://raw.githubusercontent.com/LuaCrack/DatThg/main/DatThgV5English"
+
+          ))()
+
+      end)
+
+   end,
+
+})
+
+--====================================================
+-- TAB 20K
+--====================================================
+
+local Tab20k =
+Window:CreateTab(
+"💎 Sicrip 20K",
+4483362458
+)
+
+Tab20k:CreateParagraph({
+
+   Title = "🟢 Premium",
+
+   Content =
+   "Cần phải mua mới dùng được"
+
+})
+
+--====================================================
+-- TAB 25K
+--====================================================
+
+local Tab25k =
+Window:CreateTab(
+"⚔️ Sicrip 25K",
+4483362458
+)
+
+Tab25k:CreateParagraph({
+
+   Title = "🟢 Premium",
+
+   Content =
+   "Cần phải mua mới dùng được"
+
+})
+
+--====================================================
+-- TAB BANANA
+--====================================================
+
+local BananaTab =
+Window:CreateTab(
+"🍌 Banana 75K",
+4483362458
+)
+
+BananaTab:CreateParagraph({
+
+   Title = "🟢 Premium",
+
+   Content =
+   "Cần phải mua mới dùng được"
+
+})
+
+--====================================================
+-- NOTIFY
 --====================================================
 
 Rayfield:Notify({
 
-   Title = "✅ Tuấn Sicrip",
+   Title = "Tuấn Sicrip",
 
    Content =
-   "Protected By HWID + IP Lock",
+   "Menu Loaded!",
 
    Duration = 5,
 
