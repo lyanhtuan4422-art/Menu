@@ -1,25 +1,7 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 --========================
--- USERID LOCK + KEY RIÊNG
---========================
-
-local AllowedUsers = {
-    [123456789] = "TUANSICRIP-9X2A1",
-    [987654321] = "VIP-TUAN-X92",
-    [555555555] = "BANANA-75K-X"
-}
-
-local Player = game.Players.LocalPlayer
-local UserKey = AllowedUsers[Player.UserId]
-
-if not UserKey then
-    Player:Kick("❌ Bạn chưa được cấp quyền sử dụng script")
-    return
-end
-
---========================
--- MENU + KEY SYSTEM
+-- MENU
 --========================
 
 local Window = Rayfield:CreateWindow({
@@ -35,23 +17,12 @@ local Window = Rayfield:CreateWindow({
       Enabled = false,
    },
 
-   KeySystem = true,
-
-   KeySettings = {
-      Title = "🔥 Tuấn Sicrip Key",
-      Subtitle = "Nhập Key Để Tiếp Tục",
-      Note = "Mỗi người có key riêng",
-      FileName = "TuansicripKey",
-      SaveKey = true,
-      GrabKeyFromSite = false,
-
-      Key = {
-         UserKey
-      }
-   }
+   KeySystem = false
 })
 
 local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
 
 --========================
@@ -79,10 +50,7 @@ TweenService:Create(
     {Size = UDim2.new(0,400,0,60)}
 ):Play()
 
---========================
 -- KHUNG THÔNG BÁO
---========================
-
 local WarningFrame = Instance.new("Frame")
 WarningFrame.Parent = ScreenGui
 WarningFrame.Size = UDim2.new(0,550,0,180)
@@ -144,10 +112,7 @@ WarningText.TextScaled = true
 WarningText.TextWrapped = true
 WarningText.Text = "Sicrip chỉ dùng cho 1 máy\nNếu dùng quá nhiều máy sẽ bị khóa acc và script"
 
---========================
 -- ĐÓNG GUI
---========================
-
 local function CloseGui()
 
     TweenService:Create(
@@ -249,7 +214,7 @@ BananaTab:CreateParagraph({
 
 Rayfield:Notify({
    Title = "Tuấn Sicrip",
-   Content = "HWID Lock + Key System Enabled",
+   Content = "Menu Loaded!",
    Duration = 5,
    Image = 4483362458,
 })
